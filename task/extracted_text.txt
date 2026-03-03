@@ -1,0 +1,1105 @@
+WEB T ASARIMI VE
+PROGRAMLAMA
+LAB-3
+Modern CSS ·Responsive Layout (Flex/Grid) ·T asarım Sistemi
+İçindekiler
+1 LAB-3 Öğrenme Hedefleri 3
+2 Modern CSS ve Responsive T asarıma Giriş 3
+3 Mobile-First Y aklaşımı ve Breakpoints 4
+3.1 Mobile-First Nedir? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3.2 Breakpoint’ler . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+4 CSS Değişkenleri ve Design T okens 6
+4.1 CSS Custom Properties Nedir? . . . . . . . . . . . . . . . . . . . . . . . . 6
+4.2 Design T okens Kavramı . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+5 Fluid Typography 9
+6 Flexbox T emelleri 10
+7 CSS Grid T emelleri 13
+8 Uygulama: Flex ile Nav ve T oolbar 14
+9 Uygulama: Grid ile Kart Düzeni 17
+10 Uygulama: Portföy Sayfasını 3 Breakpoint’e Göre Responsive Y ap 19
+11 CSS Kararları Notu 23
+12 Git İş Akışı ve T eslim 24
+13 T eslim Kontrol Listesi ve Değerlendirme Rubriği 25
+13.1 Değerlendirme Rubriği . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+14 Kendini T est Et 26
+1
+W eb T asarımı ve Programlama LAB-3
+15 Ek Kaynaklar ve İleri Okuma 26
+2
+W eb T asarımı ve Programlama LAB-3
+1 LAB-3 Öğrenme Hedefleri
+Önceki laboratuvarlarda geliştirme ortamını kurmuş (LAB-1) ve semantik, erişilebilir bir
+HTML iskeleti oluşturmuştun (LAB-2). Artık yapı sağlam; şimdi sıra bu yapıyı her ekran
+boyutunda güzel ve kullanılabilir kılmaya geldi.
+Bu laboratuvarda CSS’in modern layout araçlarını (Flexbox ve Grid), responsive tasarım
+ilkelerini (mobile-first, breakpoints, fluid typography) ve tasarım sisteminin temellerini
+(CSS değişkenleri / design tokens) öğreneceksin. A yrıca LAB-2’de oluşturduğun portföy
+sayfasını 3 farklı ekran boyutuna (mobil, tablet, masaüstü) uyumlu hale getireceksin.
+Bu laboratuvarın sonunda aşağıdaki becerilere sahip olacaksın:
+1. Mobile-first yaklaşımla CSS yazmak: Önce en küçük ekran için tasarlayıp, büyük
+ekranlara doğru min-width media query’leri ile genişletmek.
+2. Breakpoint’leri doğru belirlemek: Mobil ( < 640px), tablet (640–1024px) ve ma-
+saüstü ( > 1024px) kırılım noktalarını anlamak ve uygulamak.
+3. Fluid typography kullanmak: clamp() fonksiyonu ile yazı boyutlarının ekran
+genişliğine göre akıcı şekilde ölçeklenmesini sağlamak.
+4. CSS değişkenleri (custom properties) tanımlamak: Renk, spacing, border-
+radius gibi tasarım kararlarını merkezi bir yerde (design tokens) toplamak.
+5. Flexbox ile tek boyutlu düzen kurmak: Navigasyon çubuğu, toolbar ve hizalama
+işlemlerini Flex ile çözmek.
+6. CSS Grid ile iki boyutlu düzen kurmak: Kart düzeni (card layout), galeri ve
+sayfa genel layout’unu Grid ile oluşturmak.
+7. Portföy sayfasını responsive yapmak: LAB-2’deki sayfayı 3 breakpoint’e uyumlu
+hale getirmek ve her biri için ekran görüntüsü almak.
+Benzetme ile Anlama
+LAB-1’de inşaat aletlerini kurmuş, LAB-2’de binanın betonarme iskeletini dökmüş-
+tük. Şimdi iç mimariyi yapıyoruz: Odaların düzeni, mobilyaların yerleşimi, kapı ve
+pencerelerin boyutu… Üstelik bu bina “akıllı” olacak — oda sayısı ve genişliği, için-
+deki kişi sayısına göre otomatik ayarlanacak. Responsive tasarım tam olarak budur:
+İçerik, bulunduğu kaba göre kendini uyarlar.
+Sırada Ne V ar?
+Hedeflerimiz belirlendi. İlk adım olarak “neden responsive tasarım?” sorusunu cevap-
+layalım ve mobile-first felsefesini anlayalım.
+2 Modern CSS ve Responsive T asarıma Giriş
+2024 verilerine göre web trafiğinin %60’ından fazlası mobil cihazlardan geliyor. Kulla-
+nıcılar aynı siteye 4 inçlik telefondan, 10 inçlik tabletten ve 27 inçlik monitörden erişiyor.
+T ek bir sabit genişlikte tasarım yapmak artık kabul edilemez.
+3
+W eb T asarımı ve Programlama LAB-3
+T eorik Arka Plan
+Responsive W eb T asarım (R WD) kavramı, web sayfasının her ekran boyu-
+tunda okunabilir, kullanılabilir ve estetik olmasını hedefler. Üç temel bileşeni vardır:
+1. Esnek ızgaralar (Fluid grids): Piksel yerine yüzde (%), fr,vw gibi göreceli
+birimler kullanmak.
+2. Esnek medya: Görsellerin max-width: 100% ile kapsayıcısına sığması.
+3. Media query’ler: Ekran genişliğine göre CSS kurallarını değiştirmek.
+Viewport meta etiketi responsive tasarımın ön koşuludur. HTML <head> bölü-
+münde mutlaka bulunmalıdır:
+1<metaname="viewport "
+2 content= "width=device-width,initial -scale=1.0"/>
+Bu etiket olmadan mobil tarayıcılar sayfayı masaüstü genişliğinde render edip küçül-
+tür — kullanıcı parmak ucuyla yakınlaştırmak zorunda kalır.
+Gerçek Hayatta Karşılığı
+Bir gazete düşün. A ynı gazete A3 kağıda 6 sütunla basılırken, cep boyutunda 1 sü-
+tunla basılır. İçerik aynıdır ama düzen (layout) farklıdır. Responsive tasarım web
+için tam olarak budur.
+Sırada Ne V ar?
+Responsive tasarımın “ne” ve “neden”ini anladık. Şimdi en temel stratejiyi öğrenelim:
+mobile-first yaklaşımı.
+3 Mobile-First Y aklaşımı ve Breakpoints
+CSS yazarken iki farklı strateji vardır: Desktop-first (büyükten küçüğe) veya Mobile-
+first (küçükten büyüğe). Modern web geliştirmede mobile-first standart kabul edilir.
+3.1 Mobile-First Nedir?
+T eorik Arka Plan
+Mobile-first yaklaşımda CSS’i önce en küçük ekran (mobil telefon) için yazarsın.
+Ardından min-width media query’leri ile daha büyük ekranlar için kurallar eklersin.
+Mobile-first (doğru):
+1/*Varsayilan :Mobil(darekran)*/
+2.container {
+3 display : flex;
+4 flex-direction: column;
+5 padding : 1rem;
+6}
+7
+8/*Tablet veuzeri(640px+)*/
+9@media ( min-width: 640px) {
+4
+W eb T asarımı ve Programlama LAB-3
+10.container {
+11 flex-direction: row;
+12 padding : 2rem;
+13}
+14}
+15
+16/*Masaustu (1024px+)*/
+17@media ( min-width: 1024px) {
+18.container {
+19 max-width: 1200px;
+20 margin: 0 auto;
+21}
+22}
+Desktop-first (eski yöntem):
+1/*Varsayilan :Masaustu */
+2.container {
+3 display : flex;
+4 flex-direction: row;
+5 max-width: 1200px;
+6 margin: 0 auto;
+7}
+8
+9/*Tablet vealti(1024px-)*/
+10@media ( max-width: 1024px) {
+11.container { max-width: 100%; }
+12}
+13
+14/*Mobil(640px-)*/
+15@media ( max-width: 640px) {
+16.container { flex-direction: column; }
+17}
+Derinlemesine Anlama
+Mobile-first neden daha iyidir?
+• Performans: Mobil cihazlar yavaş ağ bağlantısına sahip olabilir. Mobile-first’te
+mobil kullanıcılar yalnızca temel CSS’i indirir; fazla media query kuralları yük-
+lenmez. Desktop-first’te ise mobil cihaz tüm masaüstü kurallarını indirip ardın-
+dan “üzerine yazılan” kuralları da indirir.
+• İçerik önceliği: Dar ekranda en önemli içeriğe odaklanırsın. Büyük ekrana
+geçtikçe ekleme yaparsın (column → row, daha geniş padding, sidebar ekleme).
+“Ekleme” stratejisi, “çıkarma” stratejisinden daha kolay yönetilir.
+• Progresif geliştirme: T emel deneyim herkese sunulur; daha yetenekli cihazlar
+zenginleştirilmiş deneyim alır.
+5
+W eb T asarımı ve Programlama LAB-3
+3.2 Breakpoint’ler
+T eorik Arka Plan
+Breakpoint (kırılım noktası), layout’un değiştiği ekran genişliğidir. Sabit bir stan-
+dart yoktur ama yaygın olarak kabul görmüş değerler şunlardır:
+İsim Genişlik Hedef Cihaz
+sm (small) 640px Büyük telefonlar
+md (medium) 768px T abletler (dikey)
+lg (large) 1024px T abletler (yatay) / Küçük dizüstü
+xl (extra large) 1280px Masaüstü monitörler
+2xl 1536px Geniş monitörler
+Bu LAB’da 3 ana breakpoint kullanacağız:
+• Mobil: 0–639px (varsayılan, media query yok)
+• T ablet: 640px ve üzeri ( @media (min-width: 640px) )
+• Masaüstü: 1024px ve üzeri ( @media (min-width: 1024px) )
+Dikkat – Sık Y apılan Hatalar
+• Breakpoint’leri cihaz modeline göre değil, içeriğe göre belirle. “iPhone 15
+genişliği 393px” diye sabit değer koymak yerine, içeriğin bozulduğu noktayı bul
+ve orada breakpoint koy .
+•max-width vemin-width query’lerini karıştırma. Mobile-first’te tutarlı ol: her
+zamanmin-width kullan.
+• Çok fazla breakpoint eklemek kodu karmaşıklaştırır. Genelde 2–4 breakpoint
+yeterlidir.
+Sırada Ne V ar?
+Mobile-first stratejiyi ve breakpoint mantığını kavradık. Şimdi tasarım kararlarını
+merkezi bir yerde toplamamızı sağlayan CSS değişkenlerine (design tokens) ge-
+çelim.
+4 CSS Değişkenleri ve Design T okens
+Bir projede aynı mavi rengi 47 farklı yerde kullandığını düşün. Müşteri “mavi yerine
+lacivert olsun” dediğinde 47 satırı tek tek bulup değiştirmen gerekir. CSS değişkenleri bu
+sorunu köklü şekilde çözer.
+4.1 CSS Custom Properties Nedir?
+T eorik Arka Plan
+CSS custom properties (özel özellikler), -- ön ekiyle tanımlanan ve var() fonk-
+siyonu ile kullanılan değişkenlerdir. Genelde :root seçicisinde (yani <html> elemen-
+tinde) tanımlanır, böylece tüm sayfada kullanılabilir olur.
+1:root{
+6
+W eb T asarımı ve Programlama LAB-3
+2/*---RenkPaleti ---*/
+3-- color-primary: #1E3A8A;
+4-- color-secondary: #2563EB;
+5-- color-accent: #7C3AED;
+6-- color-bg: #FFFFFF;
+7-- color-text: #1F2937;
+8-- color-muted: #6B7280;
+9-- color-surface: #F9FAFB;
+10-- color-border: #E5E7EB;
+11-- color-error: #DC2626;
+12-- color-success: #16A34A;
+13
+14/*---Spacing (Bosluk)Skalasi ---*/
+15--space-xs: 0.25rem; /*4px*/
+16--space-sm: 0.5rem; /*8px*/
+17--space-md: 1rem; /*16px*/
+18--space-lg: 1.5rem; /*24px*/
+19--space-xl: 2rem; /*32px*/
+20--space-2xl: 3rem; /*48px*/
+21--space-3xl: 4rem; /*64px*/
+22
+23/*---Border Radius ---*/
+24--radius-sm: 4px;
+25--radius-md: 8px;
+26--radius-lg: 16px;
+27--radius-full: 9999px;
+28
+29/*---FontAileleri ---*/
+30-- font-sans: system-ui, -apple-system, sans-serif;
+31-- font-mono: 'FiraCode','Consolas ', monospace;
+32
+33/*---FontBoyutlari (Fluid)---*/
+34-- text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
+35-- text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+36-- text-lg: clamp(1.125rem, 1rem + 0.6vw, 1.35rem);
+37-- text-xl: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+38-- text-2xl: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+39-- text-3xl: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+40
+41/*---Golge---*/
+42-- shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+43-- shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+44-- shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+45
+46/*---Gecis---*/
+47-- transition -fast: 150ms ease;
+48-- transition -normal: 300ms ease;
+49}
+Kullanım:
+7
+W eb T asarımı ve Programlama LAB-3
+1body {
+2 font-family: var(-- font-sans);
+3 font-size: var(-- text-base);
+4 color: var(-- color-text);
+5 background -color: var(-- color-bg);
+6}
+7
+8.card {
+9 background : var(-- color-surface);
+10 border: 1px solid var(-- color-border);
+11 border-radius: var(--radius-md);
+12 padding : var(--space-lg);
+13 box-shadow: var(-- shadow-sm);
+14 transition : box-shadow var(-- transition -normal);
+15}
+16
+17.card: hover{
+18 box-shadow: var(-- shadow-md);
+19}
+4.2 Design T okens Kavramı
+Derinlemesine Anlama
+Design tokens , tasarım kararlarının (renk, tipografi, boşluk, gölge vb.) tek bir
+kaynakta tanımlanıp tüm projede tutarlı kullanılmasını sağlayan bir mimari yakla-
+şımdır.
+CSS değişkenleri, design token’ların CSS’teki uygulamasıdır. Büyük projelerde bu
+token’lar JSON formatında tanımlanıp otomatik araçlarla CSS, iOS (Swift), Android
+(Kotlin) gibi platformlara dönüştürülür. Bu LAB’da CSS düzeyinde kalacağız.
+T oken’ların faydaları:
+• T utarlılık: Tüm bileşenler aynı renk/spacing setini kullanır. “Bu buton niye
+farklı mavi?” sorusu ortadan kalkar.
+• Bakım kolaylığı: Renk değiştirmek tek satırlık bir iştir; 47 yeri aramak gerek-
+mez.
+• T ema desteği: Dark mode eklemek, token değerlerini değiştirmek kadar kolay-
+dır.
+• Ekip iletişimi: T asarımcı ve geliştirici aynı isimleri kullanır
+(--color-primary ).
+Uygulama Adımı
+Uygulama-1: Design T oken Dosyası Oluştur
+1. Proje klasöründe src/styles/ dizini oluştur (yoksa).
+2.src/styles/tokens.css adında bir dosya oluştur.
+3. Y ukarıdaki :root bloğunu bu dosyaya yapıştır ve kendi renk tercihlerine göre
+düzenle.
+8
+W eb T asarımı ve Programlama LAB-3
+4. Ana CSS dosyandan ( index.css veyaApp.css ) bu dosyayı import et:
+1@import './styles/tokens.css';
+5. Mevcut CSS’inde sabit renk ve boyut değerleri varsa bunları var(--...) ile
+değiştirmeye başla.
+Dikkat – Sık Y apılan Hatalar
+• CSS değişkeni tanımlarken -- ön eki zorunludur. color-primary geçersizdir;
+--color-primary doğrudur.
+•var() fonksiyonuna fallback (yedek) değer verebilirsin:
+var(--color-primary, #1E3A8A) . Değişken tanımlı değilse yedek değer
+kullanılır.
+• CSS değişkenleri calc() içinde de kullanılabilir: calc(var(--space-md) * 2) .
+•:root ’ta tanımlanan değişkenler tüm elementlerde kullanılabilir. Ama bir de-
+ğişkeni belirli bir elemana özel tanımlamak da mümkündür (kapsam daraltma).
+Sırada Ne V ar?
+Design token’larımızı tanımladık. Şimdi bu token’lardaki font boyutlarında gördüğü-
+müzclamp() fonksiyonunu ve fluid typography kavramını detaylıca anlayalım.
+5 Fluid Typography
+Geleneksel yaklaşımda yazı boyutlarını media query’ler içinde breakpoint’lere göre değişti-
+rirsin: Mobilde 14px, tablette 16px, masaüstünde 18px. Bu “adımlı” geçişler keskin ve ani
+olur. Fluid typography ise yazı boyutunun ekran genişliğine göre akıcı ve kademesiz
+şekilde ölçeklenmesini sağlar.
+T eorik Arka Plan
+clamp() fonksiyonu:
+1 font-size: clamp(minimum, tercih-edilen, maksimum);
+• minimum: F ont boyutunun düşebileceği en küçük değer.
+• tercih edilen (preferred): Genellikle vw (viewport width) birimi içerir ve ekran
+genişliğiyle orantılı şekilde değişir.
+• maksimum: F ont boyutunun çıkabileceği en büyük değer.
+Örnek:
+1h1 {
+2/*Enaz2rem,enfazla3.5rem,
+3 aradaekrangenisligine goreakici*/
+4 font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+5}
+6
+7p {
+8 font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+9}
+9
+W eb T asarımı ve Programlama LAB-3
+Nasıl çalışır?
+Diyelim ki clamp(1rem, 0.9rem + 0.5vw, 1.125rem) kullanıyorsun:
+• 320px genişlikte: 0.9rem + 0.5 ×3.2px = 0.9rem + 1.6px ≈1rem→ mi-
+nimum sınırda.
+• 768px genişlikte: 0.9rem + 0.5 ×7.68px = 0.9rem + 3.84px ≈1.14rem
+→ ama maksimum 1.125rem olduğu için 1.125rem’de durur.
+• Aradaki tüm değerlerde akıcı geçiş olur.
+Uygulama Adımı
+Uygulama-2: Fluid Typography Uygula
+1.tokens.css dosyandaki --text-* değişkenlerini kontrol et.
+2. CSS’inde sabit font-size değerlerini var(--text-*) ile değiştir:
+1body { font-size: var(-- text-base); }
+2h1 { font-size: var(-- text-3xl); }
+3h2 { font-size: var(-- text-2xl); }
+4h3 { font-size: var(-- text-xl); }
+3. T arayıcı penceresini yavaşça genişletip daralt. Y azı boyutunun akıcı şekilde de-
+ğiştiğini gözlemle. Media query yazmadan font boyutu uyum sağlıyor!
+Dikkat – Sık Y apılan Hatalar
+•clamp() içinde yalnızca vw kullanma ( font-size: 3vw ). Kullanıcı tarayıcıda
+zoom yaptığında vw değişmez ve yazı büyümez — erişilebilirlik ihlalidir. Her
+zamanrem + vw karışımı kullan.
+• Minimum değeri 1rem ’in altına düşürme. 16px altındaki yazı boyutu çoğu kul-
+lanıcı için okunaksızdır.
+•line-height için de göreceli birim kullan: line-height: 1.6 (birimsiz) en
+güvenli seçenektir.
+Sırada Ne V ar?
+Fluid typography ile metin boyutlarını akıcı hale getirdik. Şimdi layout’un temel
+taşına geçiyoruz: Flexbox . T ek boyutlu düzenlerin en güçlü aracı.
+6 Flexbox T emelleri
+Flexbox (Flexible Box Layout), elemanları tek bir eksen (yatay veya dikey) boyunca
+hizalamak ve dağıtmak için tasarlanmış CSS layout modülüdür. Navigasyon çubukları,
+toolbar’lar, form satırları ve basit hizalama işlemleri için idealdir.
+T eorik Arka Plan
+Flexbox’ta iki temel kavram vardır:
+• Flex container: display: flex verilen eleman. Çocuklarını (flex item) kontrol
+eder.
+10
+W eb T asarımı ve Programlama LAB-3
+• Flex item: Container’ın doğrudan çocuk elemanları. Container’ın kurallarına
+göre yerleşir.
+Container özellikleri:
+1.flex-container {
+2 display : flex;
+3
+4/*Anaeksenyonu*/
+5 flex-direction: row; /*varsayilan :yatay*/
+6/*diger:column,row-reverse ,column-reverse */
+7
+8/*Satirlama (tasmada neolacak?)*/
+9 flex-wrap: wrap; /*tasmaolursa altasar*/
+10/*diger:nowrap (varsayilan ),wrap-reverse */
+11
+12/*Anaeksenhizalama */
+13 justify -content : center;
+14/*diger:flex-start,flex-end,space-between ,
+15 space-around,space-evenly */
+16
+17/*Capraz eksenhizalama */
+18 align-items: center;
+19/*diger:flex-start,flex-end,stretch ,
+20 baseline */
+21
+22/*Elemanlar arasibosluk */
+23 gap: 1rem;
+24}
+Item özellikleri:
+1.flex-item {
+2/*Buyume orani(fazlaalanvarsanekadarbuyusun )*/
+3 flex-grow: 1;
+4
+5/*Kucalme orani(alanyetersizse nekadarkuculsun )*/
+6 flex-shrink: 0;
+7
+8/*Baslangic boyutu */
+9 flex-basis: 200px;
+10
+11/*Kisayol :flex-growflex-shrink flex-basis*/
+12 flex: 1 0 200px;
+13
+14/*Tekbiritem'incapraz eksenhizalamasi */
+15 align-self: flex-end;
+16
+17/*Siralama (DOMsirasi degismeden gorsel sira)*/
+18order: 2;
+19}
+11
+W eb T asarımı ve Programlama LAB-3
+Benzetme ile Anlama
+Flexbox’ı bir elbise askısı gibi düşün. Askı çubuğu (ana eksen) yatay uzanır; üze-
+rindeki elbiseler (flex item’lar) bu çubuk boyunca sıralanır. justify-content , el-
+biseleri çubuğun soluna mı, ortasına mı yoksa eşit aralıklı mı dizileceğini belirler.
+align-items ise elbiselerin üst kenardan mı, ortadan mı yoksa alt kenardan mı ası-
+lacağını kontrol eder.
+Uygulama Adımı
+Uygulama-3: Flex ile Navigasyon Çubuğu
+Portföy sayfandaki <nav> elemanını Flexbox ile yatay bir navigasyon çubuğuna dö-
+nüştür:
+1/*Navigasyon cubugu */
+2nav ul {
+3 display : flex;
+4list-style: none;
+5 gap: var(--space-md);
+6 padding : 0;
+7 margin: 0;
+8}
+9
+10/*Mobilde dikeyyigin*/
+11@media ( max-width: 639px) {
+12nav ul {
+13 flex-direction: column;
+14 align-items: center;
+15}
+16}
+17
+18/*Header icindeki hizalama :logosol,navsag*/
+19header {
+20 display : flex;
+21 justify -content : space-between;
+22 align-items: center;
+23 padding : var(--space-md) var(--space-xl);
+24}
+Derinlemesine Anlama
+gap vs margin : Hangisini Kullanmalı?
+Elemanlar arası boşluk için eskiden her flex item’a margin-right verilirdi; son ele-
+manamargin-right: 0 koymak gerekiyordu. gap özelliği bu sorunu kökten çözer:
+Y alnızca elemanlar arasına boşluk koyar, başa ve sona koymaz. Modern tarayıcıların
+tamamı Flexbox’ta gap ’i destekler. Artık margin ile “son eleman” istisnası yazmaya
+gerek yoktur.
+12
+W eb T asarımı ve Programlama LAB-3
+Sırada Ne V ar?
+Flexbox ile tek boyutlu düzenleri çözmeyi öğrendik. Peki iki boyutlu düzenler (satır
+ve sütun aynı anda) gerektiğinde ne yaparız? Cevap: CSS Grid .
+7 CSS Grid T emelleri
+CSS Grid , elemanları hem satır hem sütun boyunca aynı anda kontrol etmeyi sağ-
+layan iki boyutlu layout sistemidir. Sayfa genel yapısı, kart düzenleri, galeri ızgaraları ve
+karmaşık layout’lar için idealdir.
+T eorik Arka Plan
+Grid’de üç temel kavram vardır:
+• Grid container: display: grid verilen eleman.
+• Grid item: Container’ın doğrudan çocuk elemanları.
+• Grid track: Bir satır veya sütun. grid-template-columns ve
+grid-template-rows ile tanımlanır.
+T emel Grid özellikleri:
+1.grid-container {
+2 display : grid;
+3
+4/*3esitsutun*/
+5 grid-template -columns : 1 fr1fr1fr;
+6/*veyakisaca:*/
+7 grid-template -columns : repeat(3, 1 fr);
+8
+9/*Satiryukseklikleri */
+10 grid-template -rows: auto;
+11
+12/*Elemanlar arasibosluk */
+13 gap: var(--space-lg);
+14
+15/*Hizalama (Flexbox 'takine benzer)*/
+16 justify -items: center;/*yatayhizalama */
+17 align-items: center;/*dikeyhizalama */
+18}
+fr birimi:
+fr (fraction), kalan boş alanın oransal payıdır.1fr 2fr 1fr demek: 1. sütun 1 pay ,
+2. sütun 2 pay , 3. sütun 1 pay alır (toplam 4 pay).
+repeat() ve minmax() fonksiyonları:
+1/*3esitsutun,herbirienaz200px*/
+2 grid-template -columns : repeat(3, minmax(200px, 1 fr));
+3
+4/*Otomatik sutunsayisi (responsive grid!)*/
+5 grid-template -columns :
+6 repeat(auto-fit, minmax(280px, 1 fr));
+13
+W eb T asarımı ve Programlama LAB-3
+auto-fit ileminmax() : T arayıcı, kapsayıcı genişliğine göre kaç sütun sığacağını oto-
+matik hesaplar. Ekran daraldığında sütun sayısı azalır, genişledikçe artar — media
+query bile yazmadan responsive grid elde edersin!
+Benzetme ile Anlama
+CSS Grid’i bir Excel tablosu gibi düşün. Satır ve sütunlardan oluşan bir ızgara
+(grid) tanımlarsın; elemanları bu ızgaranın hücrelerine yerleştirirsin. Bir eleman bir-
+den fazla hücreyi kaplayabilir (birleştirilmiş hücre gibi). Flexbox ise tek satırlık bir
+liste — yalnızca bir yönde düzen kurar.
+Derinlemesine Anlama
+Flexbox mı Grid mi? Hangisini Ne Zaman Kullanmalı?
+• Flexbox: T ek boyutlu düzenler için. Navigasyon çubuğu, buton grubu, form
+satırı, dikey ortalama gibi bir eksen boyunca hizalama.
+• Grid: İki boyutlu düzenler için. Sayfa layout’u, kart ızgarası, galeri, dashboard
+gibi satır ve sütun birlikte gerektiğinde.
+• Birlikte kullanım: Grid ile genel sayfa layout’unu kurar, Grid hücreleri içinde
+Flexbox ile detay hizalama yaparsın. İkisi rakip değil, tamamlayıcıdır .
+Pratik kural: “İçerik dışarı doğru büyüyor mu?” (Kaç eleman olacağı belirsiz, sar-
+malama gerekebilir) → Flexbox . “Dışarıdan içeriye kontrol ediyorum” (ızgara yapısı
+belirli) → Grid .
+Sırada Ne V ar?
+Grid’in temellerini öğrendik. Şimdi Flexbox ve Grid’i uygulamalı olarak portföy say-
+famıza entegre edeceğiz: Flex ile nav/toolbar, Grid ile kart düzeni.
+8 Uygulama: Flex ile Nav ve T oolbar
+Bu bölümde Flexbox’ı kullanarak portföy sayfanın header bölümünü responsive bir navi-
+gasyon çubuğuna dönüştüreceğiz.
+Uygulama Adımı
+Uygulama-4: Responsive Header ve Navigasyon
+1/*=====HEADER =====*/
+2header {
+3 display : flex;
+4 flex-wrap: wrap;
+5 justify -content : space-between;
+6 align-items: center;
+7 padding : var(--space-md) var(--space-lg);
+8 background -color: var(-- color-surface);
+9 border-bottom: 1px solid var(-- color-border);
+10 position : sticky;
+11 top: 0;
+14
+W eb T asarımı ve Programlama LAB-3
+12z-index: 10;
+13}
+14
+15/*Logo/Siteadi*/
+16.site-title {
+17 font-size: var(-- text-xl);
+18 font-weight: 700;
+19 color: var(-- color-primary);
+20}
+21
+22/*=====NAVLISTESI =====*/
+23nav ul {
+24 display : flex;
+25 flex-wrap: wrap;
+26list-style: none;
+27 gap: var(--space-sm);
+28 padding : 0;
+29 margin: 0;
+30}
+31
+32nav a {
+33 display : inline-block;
+34 padding : var(--space-xs) var(--space-md);
+35 color: var(-- color-text);
+36 text-decoration: none;
+37 border-radius: var(--radius-md);
+38 transition : background var(-- transition -fast),
+39 color var(-- transition -fast);
+40}
+41
+42nav a: hover,
+43nav a: focus{
+44 background -color: var(-- color-primary);
+45 color: var(-- color-bg);
+46}
+47
+48/*=====MOBiLDE DiKEYYIGIN=====*/
+49@media ( max-width: 639px) {
+50header {
+51 flex-direction: column;
+52 gap: var(--space-sm);
+53}
+54
+55nav ul {
+56 flex-direction: column;
+57 align-items: center;
+58 width: 100%;
+59}
+60
+61nav a {
+15
+W eb T asarımı ve Programlama LAB-3
+62 display : block;
+63 text-align: center;
+64 width: 100%;
+65}
+66}
+Uygulama Adımı
+Uygulama-5: T oolbar (Beceri Etiketleri)
+“Hakkımda” bölümünde kullandığın teknolojileri etiket (tag/badge) şeklinde göster
+— Flexbox ile sarmalanan bir toolbar:
+1<ulclass="skill-tags"role="list"
+2aria- label="Beceri etiketleri ">
+3<li>HTML5</ li>
+4<li>CSS3</ li>
+5<li>JavaScript</ li>
+6<li>React</ li>
+7<li>TypeScript</ li>
+8<li>Git</ li>
+9</ ul>
+1.skill-tags {
+2 display : flex;
+3 flex-wrap: wrap;
+4 gap: var(--space-sm);
+5list-style: none;
+6 padding : 0;
+7}
+8
+9.skill-tags li {
+10 background -color: var(-- color-primary);
+11 color: var(-- color-bg);
+12 padding : var(--space-xs) var(--space-md);
+13 border-radius: var(--radius-full);
+14 font-size: var(-- text-sm);
+15}
+flex-wrap: wrap sayesinde etiketler satıra sığmadığında otomatik olarak alt satıra
+kayar — ekran boyutuna göre düzen kendini ayarlar.
+Sırada Ne V ar?
+Flexbox ile navigasyonu ve toolbar’ı responsive yaptık. Şimdi projelerin kartlarını
+Grid ile ızgara düzenine yerleştireceğiz.
+16
+W eb T asarımı ve Programlama LAB-3
+9 Uygulama: Grid ile Kart Düzeni
+Portföy sayfandaki “Projelerim” bölümünde proje kartları şu anda dikey olarak alt alta
+sıralanıyor. Grid ile bu kartları responsive bir ızgara düzenine geçireceğiz.
+Uygulama Adımı
+Uygulama-6: Responsive Proje Kartları
+HTML yapısı (LAB-2’den):
+1<section id="projeler ">
+2<h2>Projelerim</ h2>
+3<divclass="project -grid">
+4<article class="project -card">
+5 <imgsrc="proje1.jpg"
+6 alt="E-Ticaret sitesi anasayfa ekrangoruntusu "/>
+7 <h3>E-Ticaret Sitesi</ h3>
+8 <p>React ve Node.js ile gelistirilmis
+9 tam kapsamli bir e-ticaret uygulamasi.</ p>
+10 <ulclass="skill-tags">
+11 <li>React</ li>
+12 <li>Node.js</ li>
+13 <li>MongoDB</ li>
+14 </ ul>
+15 </ article >
+16
+17 <article class="project -card">
+18 <imgsrc="proje2.jpg"
+19 alt="Bloguygulamasi yazilistesi gorunumu "/>
+20 <h3>Blog Uygulamasi</ h3>
+21 <p>Kisisel blog platformu.
+22 Markdown destekli yazi editoru.</ p>
+23 <ulclass="skill-tags">
+24 <li>TypeScript</ li>
+25 <li>Next.js</ li>
+26 </ ul>
+27 </ article >
+28
+29 <article class="project -card">
+30 <imgsrc="proje3.jpg"
+31 alt="Havadurumu uygulamasi arayuzu "/>
+32 <h3>Hava Durumu</ h3>
+33 <p>OpenWeather API ile anlik
+34 hava durumu bilgisi.</ p>
+35 <ulclass="skill-tags">
+36 <li>JavaScript</ li>
+37 <li>API</ li>
+38 </ ul>
+39 </ article >
+40</ div>
+41</ section >
+17
+W eb T asarımı ve Programlama LAB-3
+CSS — Grid ile responsive kart düzeni:
+1/*=====PROJEGRID=====*/
+2.project- grid{
+3 display : grid;
+4/*Sihirli satir:otomatik responsive grid!*/
+5 grid-template -columns :
+6 repeat(auto-fit, minmax(280px, 1 fr));
+7 gap: var(--space-xl);
+8}
+9
+10/*=====PROJEKARTI=====*/
+11.project-card {
+12 display : flex;
+13 flex-direction: column;
+14 background : var(-- color-surface);
+15 border: 1px solid var(-- color-border);
+16 border-radius: var(--radius-md);
+17 overflow : hidden;
+18 transition : transform var(-- transition -normal),
+19 box-shadow var(-- transition -normal);
+20}
+21
+22.project-card: hover{
+23 transform : translateY(-4px);
+24 box-shadow: var(-- shadow-lg);
+25}
+26
+27/*Karticindeki gorsel */
+28.project-card img {
+29 width: 100%;
+30 height: 200px;
+31object-fit: cover;
+32}
+33
+34/*Karticerigi */
+35.project-card h3,
+36.project-card p,
+37.project-card .skill-tags {
+38 padding : 0 var(--space-lg);
+39}
+40
+41.project-card h3 {
+42 margin-top: var(--space-md);
+43 font-size: var(-- text-lg);
+44}
+45
+46.project-card p {
+47 color: var(-- color-muted);
+48 flex-grow: 1; /*icerik farkli uzunlukta olsa
+49 bilekartlarin altkenari hizali */
+18
+W eb T asarımı ve Programlama LAB-3
+50}
+51
+52.project-card .skill-tags {
+53 padding -bottom: var(--space-lg);
+54 margin-top: auto;
+55}
+Derinlemesine Anlama
+repeat(auto-fit, minmax(280px, 1fr)) Nasıl Çalışır?
+Bu tek satır, media query yazmadan responsive grid sağlar:
+1. T arayıcı, kapsayıcı genişliğine bakar.
+2. Her sütun en az 280px olmalı — kaç sütun sığar hesaplar.
+3. Kalan boş alanı 1fr ile sütunlara eşit dağıtır.
+4. Ekran daraldığında sütun sayısı 3 → 2→ 1 şeklinde otomatik azalır.
+auto-fit vs auto-fill :
+•auto-fit : Boş sütun varsa daraltır, mevcut elemanlar genişler.
+•auto-fill : Boş sütunları korur, elemanlar genişlemez.
+Çoğu durumda auto-fit istediğin davranışı verir.
+Dikkat – Sık Y apılan Hatalar
+• Kart içindeki görseller object-fit: cover olmadan orantısız şekilde uzar veya
+sıkışır. Görsel boyutu tutarlı olsun diye her zaman object-fit belirle.
+• Grid ile kartları eşit yükseklikte yapmak istiyorsan, kart içinde display:
+flex; flex-direction: column ve açıklama paragrafına flex-grow: 1 ver
+— kartlar dikey olarak eşitlenir.
+•minmax() içindeki minimum değeri çok büyük tutma. 400px minimum, mobilde
+tek sütun bile sığmaz.
+Sırada Ne V ar?
+Grid ile kart düzenini kurduk. Şimdi tüm parçaları birleştirip portföy sayfasını 3
+breakpoint’e göre tam responsive hale getireceğiz.
+10 Uygulama: Portföy Sayfasını 3 Breakpoint’e Göre
+Responsive Y ap
+Bu bölümde LAB-2’de oluşturduğun portföy sayfasını mobilden masaüstüne kadar 3 farklı
+düzende çalışır hale getireceksin. Bu, tüm LAB-3 bilgilerinin birleştiği ana uygulama
+adımıdır.
+Uygulama Adımı
+Uygulama-7: Responsive Portföy — T am CSS
+Aşağıdaki CSS’i mobil-first mantığıyla uygula:
+19
+W eb T asarımı ve Programlama LAB-3
+1/*========================================
+2MOBILVARSAYILAN (0-639px)
+3======================================== */
+4
+5/*Genelsifirlama */
+6*, *:: before, *:: after{
+7 margin: 0;
+8 padding : 0;
+9 box-sizing: border-box;
+10}
+11
+12html {
+13scroll-behavior: smooth;
+14}
+15
+16body {
+17 font-family: var(-- font-sans);
+18 font-size: var(-- text-base);
+19line- height: 1.6;
+20 color: var(-- color-text);
+21 background -color: var(-- color-bg);
+22}
+23
+24img {
+25 max-width: 100%;
+26 height: auto;
+27 display : block;
+28}
+29
+30/*Section 'lararasibosluk */
+31section {
+32 padding : var(--space-xl) var(--space-md);
+33}
+34
+35/*Section basliklari */
+36section h2 {
+37 font-size: var(-- text-2xl);
+38 color: var(-- color-primary);
+39 margin-bottom: var(--space-lg);
+40 text-align: center;
+41}
+42
+43/*Hakkimda :teksutun,ortalanmis */
+44.about- content {
+45 display : flex;
+46 flex-direction: column;
+47 align-items: center;
+48 gap: var(--space-lg);
+49 text-align: center;
+50}
+20
+W eb T asarımı ve Programlama LAB-3
+51
+52.about- content figure {
+53 max-width: 200px;
+54}
+55
+56.about- content img {
+57 border-radius: var(--radius-full);
+58aspect-ratio: 1;
+59object-fit: cover;
+60}
+61
+62/*Iletisim formu*/
+63.form-group {
+64 margin-bottom: var(--space-md);
+65}
+66
+67label {
+68 display : block;
+69 margin-bottom: var(--space-xs);
+70 font-weight: 600;
+71}
+72
+73input, textarea, select {
+74 width: 100%;
+75 padding : var(--space-sm) var(--space-md);
+76 border: 1px solid var(-- color-border);
+77 border-radius: var(--radius-md);
+78 font-family: inherit;
+79 font-size: var(-- text-base);
+80 transition : border-color var(-- transition -fast);
+81}
+82
+83input: focus, textarea: focus, select: focus{
+84 border-color: var(-- color-primary);
+85 outline : 2px solid var(-- color-secondary);
+86 outline -offset: 2px;
+87}
+88
+89button[type= "submit"] {
+90 width: 100%;
+91 padding : var(--space-sm) var(--space-lg);
+92 background : var(-- color-primary);
+93 color: var(-- color-bg);
+94 border: none;
+95 border-radius: var(--radius-md);
+96 font-size: var(-- text-base);
+97cursor: pointer ;
+98 transition : background var(-- transition -fast);
+99}
+100
+21
+W eb T asarımı ve Programlama LAB-3
+101button[type= "submit"]: hover,
+102button[type= "submit"]: focus{
+103 background : var(-- color-secondary);
+104}
+105
+106/*Footer */
+107footer {
+108 text-align: center;
+109 padding : var(--space-xl) var(--space-md);
+110 background : var(-- color-surface);
+111 border-top: 1px solid var(-- color-border);
+112 color: var(-- color-muted);
+113 font-size: var(-- text-sm);
+114}
+115
+116/*========================================
+117TABLET (640pxveuzeri)
+118======================================== */
+119@media ( min-width: 640px) {
+120section {
+121 padding : var(--space-2xl) var(--space-xl);
+122}
+123
+124/*Hakkimda :yatayduzen*/
+125.about- content {
+126 flex-direction: row;
+127 text-align: left;
+128 align-items: flex-start;
+129}
+130
+131.about- content figure {
+132 flex-shrink: 0;
+133}
+134
+135/*Formbutonu tamgenislik olmaktan cikar*/
+136button[type= "submit"] {
+137 width: auto;
+138}
+139}
+140
+141/*========================================
+142MASAUSTU (1024pxveuzeri)
+143======================================== */
+144@media ( min-width: 1024px) {
+145/*Icerik genisligi sinirla */
+146main {
+147 max-width: 1200px;
+148 margin: 0 auto;
+149}
+150
+22
+W eb T asarımı ve Programlama LAB-3
+151section {
+152 padding : var(--space-3xl) var(--space-xl);
+153}
+154
+155/*Projekartlari enaz3sutun*/
+156.project- grid{
+157 grid-template -columns : repeat(3, 1 fr);
+158}
+159}
+Uygulama Adımı
+Uygulama-8: Ekran Görüntüleri Al
+1. Chrome DevT ools (F12)→ üst menüde “T oggle device toolbar” simgesi (veya
+Ctrl+Shift+M ).
+2. Mobil (375px genişlik) görünümünde tam sayfa ekran görüntüsü al:
+• DevT ools açıkken Ctrl+Shift+P (komut paleti) → “Capture full size sc-
+reenshot” yaz → Enter.
+• Dosya adı: screenshot-mobile.png
+3. T ablet (768px genişlik) görünümünde aynı işlemi tekrarla:
+screenshot-tablet.png
+4. Masaüstü (1280px genişlik) görünümünde: screenshot-desktop.png
+5. Her üç dosyayı proje klasöründe screenshots/ dizinine kaydet.
+Dikkat – Sık Y apılan Hatalar
+• DevT ools’un responsive modunda width alanına istediğin piksel değerini yaza-
+bilirsin. Hazır cihaz listesinden seçme zorunluluğun yok.
+• Ekran görüntülerinde sayfanın tamamı görünmelidir (scroll dahil). “Capture
+full size screenshot” bunu yapar.
+• CSS’inde px yerinerem vevar(--space-*) kullandığından emin ol. Piksel
+kullanan layout responsive davranmaz.
+Sırada Ne V ar?
+Portföy sayfası artık 3 breakpoint’te responsive çalışıyor ve ekran görüntülerini aldık.
+Şimdi “CSS Kararları” notunu yazıp, Git iş akışı ile teslim edeceğiz.
+11 CSS Kararları Notu
+T eslimde ekran görüntülerinin yanı sıra kısa bir “CSS Kararları” notu da isteniyor. Bu
+not, tasarım sürecindeki bilinçli tercihlerini belgelemendir.
+Uygulama Adımı
+Uygulama-9: CSS Kararları Notu Y az
+23
+W eb T asarımı ve Programlama LAB-3
+Proje klasöründe CSS-KARARLARI.md dosyası oluştur (veya README’ye ekle). Aşa-
+ğıdaki başlıklarda kısa açıklamalar yaz:
+1# CSS Kararlari
+2
+3## 1. Breakpoint Secimi
+4- Neden 640px ve 1024px sectim?
+5- Icerigim bu noktalarda nasil degisiyor?
+6
+7## 2. Layout Tercihleri
+8- Header icin neden Flexbox sectim?
+9- Proje kartlari icin neden Grid sectim?
+10- auto-fit mi auto-fill mi kullandim, neden?
+11
+12## 3. Design Tokens
+13- Hangi renk paletini sectim ve neden?
+14- Spacing skalasini nasil belirledim?
+15- Fluid typography icin clamp degerlerini
+16nasil ayarladim?
+17
+18## 4. Responsive Stratejiler
+19- Mobile-first yaklasimini nasil uyguladim?
+20- Hangi elemanlar breakpoint'lerde degisiyor?
+21- Gorsel boyutlari nasil yonettim?
+Her madde 2–3 cümle yeterlidir. Amaç, kararların rastgele değil bilinçli olduğunu
+göstermektir.
+Sırada Ne V ar?
+CSS kararları notunu da yazdık. Şimdi tüm çalışmayı Git ile kayıt altına alıp Git-
+Hub’a yükleyelim.
+12 Git İş Akışı ve T eslim
+LAB-1 ve LAB-2’de öğrendiğin Git iş akışını bu LAB’da da uygulayacaksın.
+Uygulama Adımı
+Uygulama-10: Git ile Kaydet ve GitHub’a Yükle
+1. Y eni branch aç:
+1git checkout -b feature/responsive-layout
+2. Adım adım commit at (her mantıksal değişiklik bir commit):
+1git add src/styles/tokens.css
+2git commit -m "feat:addCSSdesign tokens"
+3
+4git add src/styles/
+5git commit -m "feat:addresponsive navigation withFlexbox "
+24
+W eb T asarımı ve Programlama LAB-3
+6
+7git add src/styles/
+8git commit -m "feat:addproject cardgridlayout"
+9
+10git add src/styles/
+11git commit -m "feat:implement 3-breakpoint responsive design
+"
+12
+13git add screenshots/
+14git commit -m "docs:addmobile/tablet/desktop screenshots "
+15
+16git add CSS-KARARLARI.md
+17git commit -m "docs:addCSSdecisions documentation "
+3. GitHub’a push et:
+1git push -u origin feature/responsive-layout
+13 T eslim Kontrol Listesi ve Değerlendirme Rubriği
+Kontrol Listesi
+T eslim öncesi kontrol listesi:
+□ CSS değişkenleri ( :root içinde design tokens) tanımlanmış mı?
+□ Fluid typography ( clamp() ) uygulanmış mı?
+□ Navigasyon çubuğu Flexbox ile responsive yapılmış mı?
+□ Proje kartları Grid ile ızgara düzeninde mi?
+□ Mobile-first yaklaşım uygulanmış mı? ( min-width media query’ler)
+□ En az 3 breakpoint tanımlanmış ve çalışıyor mu? (mobil/tablet/masaüstü)
+□ Görseller max-width: 100% ile responsive mi?
+□<meta name="viewport"> etiketi mevcut mu?
+□ T ab ile gezinme ve focus göstergesi hâlâ çalışıyor mu? (LAB-2 kazanımları bo-
+zulmamış)
+□ 3 ekran görüntüsü (mobil/tablet/masaüstü) alınmış mı?
+□ CSS Kararları notu yazılmış mı?
+□ En az 3 anlamlı commit atılmış ve branch kullanılmış mı?
+□ GitHub’a push edilmiş mi?
+13.1 Değerlendirme Rubriği
+Kriter Puan Açıklama
+CSS değişkenleri (design tokens) tanımlı 10 :root içinde renk, spa-
+cing, radius
+Fluid typography uygulanmış 10 clamp() ile akıcı font
+boyutları
+Flexbox ile nav/toolbar 15 Responsive navigas-
+yon çubuğu
+25
+W eb T asarımı ve Programlama LAB-3
+Kriter Puan Açıklama
+Grid ile kart düzeni 15 Responsive proje kart-
+ları ızgarası
+Mobile-first 3 breakpoint 15 Mobil/tablet/masaüstü
+düzenleri çalışıyor
+Görseller responsive 5 max-width: 100%,
+object-fit
+Ekran görüntüleri (3 adet) 10 Mobil, tablet, masa-
+üstü tam sayfa
+CSS Kararları notu 10 Breakpoint, layout,
+token tercihleri açık-
+lanmış
+Git iş akışı (branch + commit) 10 En az 3 anlamlı com-
+mit
+T oplam 100
+14 Kendini T est Et
+Kendini T est Et
+Aşağıdaki sorulara kendi cümlelerinle 2–3 satır cevap yazabiliyor musun? Y azamıyor-
+san ilgili bölümü tekrar oku.
+1. Mobile-first yaklaşım nedir? min-width ve max-width farkı nedir?
+2. Breakpoint nedir ve nasıl belirlenir? İçeriğe göre mi, cihaz modeline
+göre mi?
+3. CSS custom property nasıl tanımlanır ve nasıl kullanılır? var() fonk-
+siyonunun fallback değeri ne işe yarar?
+4. Design token nedir? Neden renk ve spacing değerlerini tek bir yerde
+toplarız?
+5. clamp() fonksiyonunun 3 parametresi nedir? Neden sadece vw kullan-
+mak erişilebilirlik sorununa yol açar?
+6. Flexbox ile Grid arasındaki temel fark nedir? Hangisini ne zaman
+kullanırsın?
+7. justify-content ve align-items arasındaki fark nedir?
+8. repeat(auto-fit, minmax(280px, 1fr)) ne yapar? Neden media qu-
+ery’ye gerek kalmaz?
+9. fr birimi nedir? 1fr 2fr 1fr ne anlama gelir?
+10. gap özelliği neden margin kullanmaktan daha pratiktir?
+15 Ek Kaynaklar ve İleri Okuma
+• Flexbox Rehberi: https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+— CSS-T ricks’in kapsamlı görsel Flexbox rehberi.
+• Grid Rehberi: https://css-tricks.com/snippets/css/complete-guide-grid/
+— CSS-T ricks’in kapsamlı görsel Grid rehberi.
+26
+W eb T asarımı ve Programlama LAB-3
+• Flexbox F roggy: https://flexboxfroggy.com — Flexbox öğrenmek için interak-
+tif oyun.
+• Grid Garden: https://cssgridgarden.com — CSS Grid öğrenmek için interaktif
+oyun.
+• Responsive Design (MDN):
+https://developer.mozilla.org/en-US/docs/Learn/CSS/
+CSS_layout/Responsive_Design
+MDN responsive tasarım rehberi.
+• Modern CSS Solutions: https://moderncss.dev — Stephanie Eckles’ın modern
+CSS teknikleri koleksiyonu.
+• Every Layout: https://every-layout.dev — Reusable CSS layout kalıpları.
+• Utopia (Fluid Type): https://utopia.fyi — Fluid typography ve spacing he-
+saplayıcı.
+• Design T okens (W3C): https://www.w3.org/community/design-tokens/ — De-
+sign token’lar W3C topluluk grubu.
+W eb T asarımı ve Programlama – LAB-3 Föyü
+27
