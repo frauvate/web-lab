@@ -1,119 +1,16 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esma Yıldırım - Kişisel Portfolyo</title>
-    <meta name="description" content="Esma Yıldırım kişisel portföy sayfası.">
-    <link rel="stylesheet" href="/src/styles/tokens.css">
-    <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Esma Yıldırım - Portfolio & UI Kit</title>
+    <meta name="description" content="Esma Yıldırım kişisel portföy ve UI kit sayfası. Lab4 - Tailwind CSS v4." />
 </head>
 
-<body>
-    <!-- Skip Navigation Link -->
-    <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
-
-    <header>
-        <h1>Esma Yıldırım - Kişisel Portfolyo</h1>
-        <nav aria-label="Ana navigasyon">
-            <ul>
-                <li><a href="#hakkimda">Hakkımda</a></li>
-                <li><a href="#projeler">Projeler</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main id="main-content">
-        <!-- Hakkımda Bölümü -->
-        <section id="hakkimda" aria-labelledby="hakkimda-baslik">
-            <h2 id="hakkimda-baslik">Hakkımda</h2>
-            <figure>
-                <!-- Dummy image used for now, user can place their own later in assets -->
-                <img src="/assets/profilepic.jpg" alt="Esma Yıldırım'ın profil fotoğrafı" />
-                <figcaption>Esma Yıldırım</figcaption>
-            </figure>
-            <p>Merhaba, ben Esma. Web geliştirme teknolojilerine meraklı, sürekli öğrenen bir yazılım geliştiricisiyim.
-                Kullanıcı dostu ve erişilebilir web deneyimleri oluşturmayı hedefliyorum.</p>
-            <h3>Kullandığım Teknolojiler</h3>
-            <ul class="skill-tags">
-                <li>HTML5 & CSS3</li>
-                <li>JavaScript</li>
-                <li>React & Vite</li>
-                <li>Git & GitHub</li>
-            </ul>
-        </section>
-
-        <!-- Projelerim Bölümü -->
-        <section id="projeler" aria-labelledby="projeler-baslik">
-            <h2 id="projeler-baslik">Projelerim</h2>
-            <div class="project-grid">
-
-                <article class="project-card">
-                    <img src="/assets/proje1.jpg" alt="E-ticaret sitesi ana sayfa ekran görüntüsü" />
-                    <h3>E-Ticaret Sitesi</h3>
-                    <p>Kullanıcıların ürün arayıp sepete ekleyebildiği bir alışveriş sitesi prototipi.</p>
-                    <p><strong>Kullanılan Teknolojiler:</strong> React, TailwindCSS, Node.js</p>
-                </article>
-
-                <article class="project-card">
-                    <img src="/assets/proje2.jpg" alt="Blog uygulaması okuma sayfası ekran görüntüsü" />
-                    <h3>Blog Uygulaması</h3>
-                    <p>Kişisel yazılarımı paylaştığım, yorum yapılabilen ve Markdown destekleyen blog.</p>
-                    <p><strong>Kullanılan Teknolojiler:</strong> HTML5, CSS3, JavaScript</p>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- İletişim Bölümü -->
-        <section id="iletisim" aria-labelledby="iletisim-baslik">
-            <h2 id="iletisim-baslik">İletişim</h2>
-            <form action="#" method="POST" novalidate>
-                <fieldset>
-                    <legend>İletişim Formu</legend>
-
-                    <div class="form-group">
-                        <label for="name">Ad Soyad:</label>
-                        <input type="text" id="name" name="name" required minlength="2" aria-describedby="name-error" />
-                        <small id="name-error" class="error-msg" role="alert"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">E-posta:</label>
-                        <input type="email" id="email" name="email" required aria-describedby="email-error" />
-                        <small id="email-error" class="error-msg" role="alert"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="subject">Konu:</label>
-                        <select id="subject" name="subject" required aria-describedby="subject-error">
-                            <option value="">-- Seçiniz --</option>
-                            <option value="is">İş Teklifi</option>
-                            <option value="soru">Soru</option>
-                            <option value="oneri">Öneri</option>
-                        </select>
-                        <small id="subject-error" class="error-msg" role="alert"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Mesajınız:</label>
-                        <textarea id="message" name="message" rows="5" required minlength="10"
-                            aria-describedby="message-error"></textarea>
-                        <small id="message-error" class="error-msg" role="alert"></small>
-                    </div>
-
-                    <button type="submit">Gönder</button>
-                </fieldset>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Esma Yıldırım. Tüm hakları saklıdır.</p>
-    </footer>
-    <script type="module" src="/main.js"></script>
+<body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>
