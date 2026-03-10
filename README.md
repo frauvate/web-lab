@@ -1,24 +1,29 @@
-# Kişisel Portfolyo
+# Kişisel Portfolyo — Lab4: Tailwind CSS v4
 
-Bu proje, kişisel portfolyo sayfasının modern, karanlık (dark) tema ve yüksek erişilebilirlik standartlarına uygun olarak yeniden tasarlanmasını içermektedir.
+Bu proje, Tailwind CSS v4 ve React kullanılarak yeniden yapılandırılmış kişisel portfolyo ve UI Kit uygulamasıdır.
 
 ## Özellikler
 
-- **Modern Karanlık Tema (Dark Mode):** CSS değişkenleri ve modern `flexbox`/`grid` modülleri kullanılarak oluşturulmuş, kullanıcı dostu renk paletine (slate ve blue tonları) sahip arayüz tasarımı.
-- **Erişilebilirlik (Accessibility - a11y):** Klavyeyle gezinmeyi kolaylaştıran "Ana içeriğe atla" (Skip Navigation) bağlantısı, görünür odak (focus) göstergeleri, anlamsal (semantic) HTML etiketleri ve ARIA nitelikleri sayesinde tüm kullanıcı gruplarının sayfayı rahatça kullanabilmesi sağlandı.
-- **Duyarlı Tasarım (Responsive Design):** Mobil ekranlardan geniş masaüstü monitörlere kadar her boyuttaki cihazda sorunsuz bir deneyim sağlamak amacıyla esnek tasarıma uyarlanmıştır.
-- **Performans:** Minimal CSS ve standart HTML kullanılarak yüksek performans hedeflendi.
+- **Tailwind CSS v4:** `@tailwindcss/vite` eklentisi ile Vite entegrasyonu, `@theme` ile özel tema.
+- **React Bileşenleri:** Button, Input, Card, Alert — prop tabanlı, yeniden kullanılabilir.
+- **UI Kit Sayfası:** Tüm bileşen varyantlarını (8+) sergileyen interaktif sayfa.
+- **Portfolio Migrasyonu:** Lab3 portföyü Tailwind bileşenleriyle yeniden yazıldı.
+- **Dark Mode:** Toggle butonuyla `dark:` class'ları; tercih `localStorage`'da saklanır.
+- **Responsive Tasarım:** `sm:`, `md:`, `lg:` breakpoint prefixleri ile mobil-first.
 
-## Sonuçlar (Lighthouse Raporları)
+## Kurulum ve Çalıştırma
 
-Projede yapılan kullanıcı arayüzü ve performans/erişilebilirlik iyileştirmelerinin etkisini ölçmek amacıyla Lighthouse raporları oluşturulmuştur. Tasarım değişikliğinden önceki durum ile son performans optimizasyonlarını içeren rapor görselleri aşağıdadır.
+```bash
+npm install
+npm run dev     # Geliştirme sunucusu: http://localhost:5173
+npm run build   # Üretim build
+```
 
-### CSS Düzenlemesinden Önce
-*(Eski sürümdeki sayfa durumu ve Lighthouse metrikleri)*
+## Laboratuvar Geçmişi
 
-![İlk Lighthouse Raporu](./conclusion/first-lh-report.png)
-
-### CSS Düzenlemesinden Sonra
-*(Yeni modern karanlık tema uygulaması ve optimizasyonlardan sonraki metrikler)*
-
-![Final Lighthouse Raporu](./conclusion/final-lh-report.png)
+| Lab  | Konu                          |
+|------|-------------------------------|
+| Lab1 | HTML5 Semantik Yapı           |
+| Lab2 | CSS Temel Stiller             |
+| Lab3 | Responsive Design + CSS Grid  |
+| Lab4 | Tailwind CSS v4 + React       |
