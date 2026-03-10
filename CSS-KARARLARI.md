@@ -33,3 +33,19 @@ Bu doküman, modern CSS web tasarım prensipleri (Flexbox & CSS Grid), CSS deği
   - **Projeler:** Mobilde 1 kolon olarak listelenirken auto-fit sayesinde masaüstünde 3 sütunlu ızgaralara geçer.
 - **Görsel boyutları nasıl yönettim?**
   Her görsele temel olarak `max-width: 100%` ve `height: auto` verdim. Bunun yetersiz olduğu kart resimlerinde veya yuvarlak profil fotolarında (örn: Proje kartları `height: 200px`) en boy oranlarını bozmamak adına `object-fit: cover` ve `aspect-ratio` tanımlamaları ile kırpma yönetimini tarayıcılara bıraktım.
+
+---
+
+## 5. Lab4 — Tailwind CSS v4 Kararları
+
+- **Neden Tailwind CSS v4 seçtim?**
+  Utility-first yaklaşımı, hızlı prototipleme ve bileşen bazlı geliştirme için ideal. v4'ün `@import "tailwindcss"` sözdizimi ve `@theme` ile özel değişken tanımlama özelliği, CSS-in-JS olmadan güçlü tema yönetimi sağlıyor.
+
+- **Dark mode'u nasıl implemente ettim?**
+  `class` stratejisi tercih edildi: `document.documentElement.classList.add('dark')` ile HTML root'una `dark` class'ı ekleniyor. Böylece tüm `dark:` prefixli Tailwind utility'leri devreye giriyor. Tercih `localStorage`'da saklanarak sayfa yenilenmesinde tutuldu.
+
+- **`@theme` ile özel tema nasıl çalışıyor?**
+  Tailwind v4'te `@theme` bloğu, CSS custom property'leri (`--color-primary`, `--font-sans` vb.) doğrudan Tailwind utility'lerine bağlıyor. Bu sayede `text-primary`, `bg-primary` gibi kısayollar tek yerden yönetilebiliyor.
+
+- **Responsive için `sm:`, `md:`, `lg:` prefixler:**
+  Mobile-first mantığıyla temel stiller prefix'siz yazıldı; büyük ekranlar için prefix'li override'lar eklendi (örn: `grid sm:grid-cols-2 lg:grid-cols-3`). Bu strateji Lab3'teki `@media (min-width: ...)` mantığının Tailwind karşılığıdır.
