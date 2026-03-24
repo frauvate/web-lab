@@ -1,4 +1,4 @@
-import React from 'react'
+import { ReactNode } from 'react'
 
 const variantConfig = {
     info: {
@@ -35,13 +35,21 @@ const variantConfig = {
     },
 }
 
+export interface AlertProps {
+    variant?: 'info' | 'success' | 'warning' | 'error';
+    title?: string;
+    children?: ReactNode;
+    onClose?: () => void;
+    className?: string;
+}
+
 export default function Alert({
     variant = 'info',
     title,
     children,
     onClose,
     className = '',
-}) {
+}: AlertProps) {
     const config = variantConfig[variant] || variantConfig.info
 
     return (

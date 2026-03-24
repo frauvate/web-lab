@@ -19,6 +19,11 @@ const variantClasses = {
         'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-500 dark:hover:text-white focus:ring-blue-500',
 }
 
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'outline';
+    size?: 'sm' | 'md' | 'lg';
+}
+
 export default function Button({
     children,
     variant = 'primary',
@@ -27,7 +32,7 @@ export default function Button({
     onClick,
     type = 'button',
     className = '',
-}) {
+}: ButtonProps) {
     return (
         <button
             type={type}

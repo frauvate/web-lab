@@ -1,8 +1,19 @@
-import React from 'react'
+import { ReactNode } from 'react'
 
 const variantStyles = {
     bordered: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md',
     shadowed: 'border-0 bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl',
+}
+
+export interface CardProps {
+    children?: ReactNode;
+    variant?: 'bordered' | 'shadowed';
+    title?: string;
+    subtitle?: string;
+    footer?: ReactNode;
+    image?: string;
+    imageAlt?: string;
+    className?: string;
 }
 
 export default function Card({
@@ -14,7 +25,7 @@ export default function Card({
     image,
     imageAlt = '',
     className = '',
-}) {
+}: CardProps) {
     return (
         <div
             className={`

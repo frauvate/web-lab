@@ -1,5 +1,11 @@
 import React from 'react'
 
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    label?: string;
+    error?: string;
+    helperText?: string;
+}
+
 export default function Input({
     label,
     id,
@@ -12,7 +18,7 @@ export default function Input({
     disabled = false,
     required = false,
     className = '',
-}) {
+}: InputProps) {
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-')
 
     return (
